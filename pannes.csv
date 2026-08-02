@@ -203,3 +203,76 @@ frein a main qui ne tient pas la voiture,cable de frein a main detendu,freinage
 la voiture recule legerement frein a main serre,cable de frein a main detendu,freinage
 frein a main qui glisse en pente,cable de frein a main detendu,freinage
 voiture qui bouge malgre le frein a main serre,cable de frein a main detendu,freinage
+la courroie de distribution fait un bruit de claquement,courroie de distribution usee,moteur
+bruit de fouettement venant de l avant du moteur au ralenti,courroie de distribution usee,moteur
+le moteur cale brutalement et ne redemarre plus du tout,courroie de distribution cassee,moteur
+bruit metallique violent suivi d un arret moteur complet,courroie de distribution cassee,moteur
+le radiateur fuit du liquide devant la voiture,radiateur perce,refroidissement
+flaque de liquide de refroidissement a l avant apres stationnement,radiateur perce,refroidissement
+le moteur surchauffe uniquement sur autoroute,thermostat bloque,refroidissement
+la temperature ne monte jamais meme apres un long trajet,thermostat bloque en position ouverte,refroidissement
+le voyant abs reste allume sur le tableau de bord,capteur abs defectueux,freinage
+systeme antiblocage qui semble desactive avec voyant allume,capteur abs defectueux,freinage
+la voiture freine normalement mais le voyant abs clignote,capteur abs defectueux,freinage
+la telecommande ne ferme plus les portes a distance,verrouillage centralise en panne,electrique
+je dois fermer chaque porte manuellement avec la cle,verrouillage centralise en panne,electrique
+les portes se verrouillent puis se deverrouillent toutes seules,module de verrouillage centralise defectueux,electrique
+le retroviseur electrique ne bouge plus avec la commande,moteur retroviseur electrique en panne,electrique
+impossible de regler les retroviseurs depuis l interieur,moteur retroviseur electrique en panne,electrique
+le filtre a air est visiblement tres sale et le moteur manque de puissance,filtre a air encrasse,moteur
+perte de puissance generale et surconsommation legere,filtre a air encrasse,moteur
+bruit d aspiration anormal au niveau du moteur,filtre a air encrasse,moteur
+le demarreur clique sans que le moteur ne tourne,relais de demarreur defectueux,electrique
+un simple clic se fait entendre en tournant la cle sans demarrage,relais de demarreur defectueux,electrique
+le tableau de bord clignote et rien ne se passe au demarrage,relais de demarreur defectueux,electrique
+capteur de stationnement qui bipe sans raison,capteur de recul defectueux,electrique
+les capteurs de recul bipent en continu meme sans obstacle,capteur de recul defectueux,electrique
+aucun bip du capteur de recul en marche arriere,capteur de recul defectueux,electrique
+le moteur cale des que j allume la climatisation,regime moteur instable avec climatisation,climatisation
+la voiture perd en puissance uniquement quand la clim est activee,regime moteur instable avec climatisation,climatisation
+le lave glace ne projette plus de liquide,pompe lave glace en panne,electrique
+aucun liquide ne sort quand j actionne le lave glace,pompe lave glace en panne,electrique
+les feux de position ne s allument plus a l avant,ampoule feu de position grillee,electrique
+une led de feu diurne reste eteinte,ampoule feu de position grillee,electrique
+le tableau de bord affiche un message erreur moteur au demarrage,calculateur moteur defaillant,electrique
+plusieurs voyants s allument en meme temps sans raison apparente,calculateur moteur defaillant,electrique
+la voiture entre en mode degrade avec perte de puissance,calculateur moteur en mode degrade,injection
+vitesse limitee automatiquement et voyant moteur allume,calculateur moteur en mode degrade,injection
+la batterie se decharge en une nuit meme voiture eteinte,fuite de courant electrique,electrique
+la voiture ne demarre plus apres une seule journee sans rouler,fuite de courant electrique,electrique
+corrosion visible sur les cosses de la batterie,bornes de batterie corrodees,electrique
+demarrage capricieux avec depot blanc sur la batterie,bornes de batterie corrodees,electrique
+la pedale d embrayage reste enfoncee au sol,cable ou circuit d embrayage casse,transmission
+impossible de changer de vitesse pedale embrayage bloquee en bas,cable ou circuit d embrayage casse,transmission
+le siege conducteur ne se regle plus electriquement,moteur de reglage de siege en panne,electrique
+elle demarre pas ma voiture,batterie a plat,electrique
+la voiture ve pas demarer,batterie a plat,electrique
+jarrive pas a demarer la voiture,batterie a plat,electrique
+ma voiture elle demmare pas du tout,batterie a plat,electrique
+la bagnole demare pas ce matin,batterie faible ou usee,electrique
+ca fait un bruit chelou quand je freine,plaquettes de frein usees,freinage
+sa grince fort quand j freine,plaquettes de frein usees,freinage
+le frein i fait un bruit bizzare,plaquettes de frein usees,freinage
+ya de la fumee blanche qui sort du moteur,joint de culasse defectueux,moteur
+ca fume blanc de partout sous le capot,joint de culasse defectueux,moteur
+elle chauffe trop la voiture et ca fume,joint de culasse defectueux,moteur
+la clim elle marche pas donne pas d air froid,gaz climatisation manquant,climatisation
+la clim souffle chaud jarrive pas a comprendre,compresseur de climatisation en panne,climatisation
+sa consome trop d essence dun coup,injecteurs encrasses,injection
+elle consome enormement de carburant maintenant,injecteurs encrasses,injection
+le volant i vibre bizarre,geometrie des roues desreglee,direction
+sa vibre dans le volant quand jroule vite,pneus desequilibres,pneumatique
+ya une odeur de brule qui vient du moteur,court circuit electrique,electrique
+ca sent le cramé sous le capot,court circuit electrique,electrique
+ca pu le brule dans la voiture,court circuit electrique,electrique
+le moteur i cale tout seul jsp pourquoi,capteur de regime moteur defaillant,moteur
+elle cale toute seule au feu rouge,capteur de regime moteur defaillant,moteur
+la voiture perd de la puissance en montant une cote,turbo defectueux,injection
+elle a plus de force dans les montees,turbo defectueux,injection
+le voyant moteur i reste allume tout le temps,sonde lambda defectueuse,echappement
+un voyant orange reste allume jsp ce que ca veut dire,sonde lambda defectueuse,echappement
+la pedale de frein elle est molle jenfonce trop,air dans le circuit de freinage,freinage
+la telecommande marche plus pour ouvrir les portes,verrouillage centralise en panne,electrique
+jarrive plus a fermer la voiture avec la cle a distance,verrouillage centralise en panne,electrique
+ca fait tic tic quand je tourne la cle mais rien demarre,relais de demarreur defectueux,electrique
+le moteur essuie glace repond plus,moteur essuie glace en panne,electrique

@@ -1,0 +1,205 @@
+symptome,panne,systeme
+voyant batterie allume et demarrage difficile,alternateur defectueux,electrique
+demarrage impossible avec voyant batterie qui clignote,alternateur defectueux,electrique
+la voiture perd de la puissance electrique en roulant,alternateur defectueux,electrique
+bruit de grincement du moteur avec voyant batterie allume,alternateur defectueux,electrique
+voiture ne demarre pas du tout silence total,batterie a plat,electrique
+aucun bruit en tournant la cle de contact,batterie a plat,electrique
+les phares ne s allument plus et voiture ne demarre pas,batterie a plat,electrique
+demarreur muet et tableau de bord eteint,batterie a plat,electrique
+demarrage difficile par temps froid,batterie faible ou usee,electrique
+la voiture met du temps a demarrer le matin,batterie faible ou usee,electrique
+demarrage laborieux apres plusieurs jours sans rouler,batterie faible ou usee,electrique
+moteur qui peine a demarrer quand il fait froid,batterie faible ou usee,electrique
+bruit de grincement fort au freinage,plaquettes de frein usees,freinage
+grincement metallique quand j appuie sur le frein,plaquettes de frein usees,freinage
+freinage bruyant surtout a basse vitesse,plaquettes de frein usees,freinage
+sifflement aigu au freinage,plaquettes de frein usees,freinage
+pedale de frein spongieuse,air dans le circuit de freinage,freinage
+pedale de frein qui s enfonce facilement,air dans le circuit de freinage,freinage
+sensation de mollesse en appuyant sur le frein,air dans le circuit de freinage,freinage
+frein qui repond mal meme en appuyant fort,air dans le circuit de freinage,freinage
+vibration dans le volant au freinage,disques de frein voiles,freinage
+le volant tremble quand je freine,disques de frein voiles,freinage
+secousses dans la direction lors du freinage,disques de frein voiles,freinage
+volant qui vibre fort en freinant a haute vitesse,disques de frein voiles,freinage
+voiture tire d un cote au freinage,etrier de frein grippe,freinage
+la voiture devie sur la droite quand je freine,etrier de frein grippe,freinage
+freinage asymetrique la voiture part sur le cote,etrier de frein grippe,freinage
+une roue chauffe plus que les autres apres un trajet,etrier de frein grippe,freinage
+ralenti instable et voyant moteur allume,bougies usees,allumage
+le moteur tremble au ralenti avec voyant allume,bougies usees,allumage
+a coups au ralenti et perte de puissance legere,bougies usees,allumage
+moteur qui broute et consomme plus que d habitude,bougies usees,allumage
+demarrage difficile et perte de puissance,bobine d allumage defectueuse,allumage
+le moteur tousse et perd de la puissance en acceleration,bobine d allumage defectueuse,allumage
+a coups violents a l acceleration avec voyant moteur,bobine d allumage defectueuse,allumage
+moteur qui cale frequemment en roulant,bobine d allumage defectueuse,allumage
+odeur de brule et fumee sous le capot,court circuit electrique,electrique
+fumee qui sort du tableau de bord,court circuit electrique,electrique
+odeur de plastique brule dans l habitacle,court circuit electrique,electrique
+etincelles visibles sous le capot,court circuit electrique,electrique
+clignotants qui clignotent trop vite,ampoule de clignotant grillee,electrique
+un seul clignotant ne fonctionne plus,ampoule de clignotant grillee,electrique
+le clignotant clignote deux fois plus vite que la normale,ampoule de clignotant grillee,electrique
+voyant clignotant qui reste fixe au lieu de clignoter,ampoule de clignotant grillee,electrique
+essuie glace ne fonctionne pas,moteur essuie glace en panne,electrique
+les essuie glaces restent bloques sur le pare brise,moteur essuie glace en panne,electrique
+aucune reaction en actionnant les essuie glaces,moteur essuie glace en panne,electrique
+essuie glace tres lent ou saccade,moteur essuie glace en panne,electrique
+vitres electriques bloquees,moteur leve vitre defectueux,electrique
+la vitre ne monte plus quand j appuie sur le bouton,moteur leve vitre defectueux,electrique
+vitre coincee a mi hauteur,moteur leve vitre defectueux,electrique
+bruit de moteur sans mouvement de la vitre,moteur leve vitre defectueux,electrique
+vibrations fortes en roulant a haute vitesse,pneus desequilibres,pneumatique
+le volant vibre fort au dessus de 100 kmh,pneus desequilibres,pneumatique
+tremblement dans la caisse a vitesse elevee,pneus desequilibres,pneumatique
+vibration qui augmente avec la vitesse,pneus desequilibres,pneumatique
+usure irreguliere des pneus,parallelisme desregle,pneumatique
+les pneus s usent plus d un cote que de l autre,parallelisme desregle,pneumatique
+la voiture tire legerement sur le cote en roulant,parallelisme desregle,pneumatique
+volant legerement decentre en ligne droite,parallelisme desregle,pneumatique
+pression des pneus qui baisse souvent,fuite lente pneu,pneumatique
+je dois regonfler un pneu toutes les semaines,fuite lente pneu,pneumatique
+voyant pression pneu qui s allume regulierement,fuite lente pneu,pneumatique
+un pneu semble toujours un peu degonfle,fuite lente pneu,pneumatique
+fuite de liquide sous la voiture couleur verte,fuite liquide de refroidissement,refroidissement
+flaque verte ou orange sous le moteur,fuite liquide de refroidissement,refroidissement
+niveau de liquide de refroidissement qui baisse vite,fuite liquide de refroidissement,refroidissement
+traces de liquide colore sous la voiture garee,fuite liquide de refroidissement,refroidissement
+temperature moteur qui monte trop vite,pompe a eau defectueuse,refroidissement
+l aiguille de temperature grimpe rapidement en roulant,pompe a eau defectueuse,refroidissement
+moteur qui chauffe anormalement meme sur trajet court,pompe a eau defectueuse,refroidissement
+surchauffe moteur repetee,pompe a eau defectueuse,refroidissement
+ventilateur moteur qui ne se declenche pas,capteur de temperature defaillant,refroidissement
+le ventilateur ne demarre jamais meme moteur chaud,capteur de temperature defaillant,refroidissement
+temperature affichee incoherente sur le tableau de bord,capteur de temperature defaillant,refroidissement
+jauge de temperature qui reste bloquee,capteur de temperature defaillant,refroidissement
+fumee blanche a l echappement,joint de culasse defectueux,moteur
+fumee blanche epaisse au demarrage et en roulant,joint de culasse defectueux,moteur
+melange eau et huile visible dans le moteur,joint de culasse defectueux,moteur
+perte de liquide de refroidissement sans fuite visible,joint de culasse defectueux,moteur
+voiture qui cale au ralenti,capteur de regime moteur defaillant,moteur
+le moteur s eteint tout seul a l arret,capteur de regime moteur defaillant,moteur
+calages frequents et imprevisibles du moteur,capteur de regime moteur defaillant,moteur
+moteur qui a du mal a tenir le ralenti,capteur de regime moteur defaillant,moteur
+bruit de cliquetis dans le moteur,niveau d huile bas,moteur
+bruit metallique repetitif venant du moteur,niveau d huile bas,moteur
+cliquetis qui s intensifie a l acceleration,niveau d huile bas,moteur
+voyant huile qui s allume avec bruit moteur,niveau d huile bas,moteur
+voyant pression d huile allume,pompe a huile defectueuse,moteur
+voyant huile rouge allume en roulant,pompe a huile defectueuse,moteur
+alerte pression huile qui reste allumee,pompe a huile defectueuse,moteur
+temoin huile allume meme apres appoint,pompe a huile defectueuse,moteur
+consommation d huile excessive,segments de piston uses,moteur
+je dois rajouter de l huile tres regulierement,segments de piston uses,moteur
+fumee bleutee a l echappement avec perte d huile,segments de piston uses,moteur
+niveau d huile qui baisse sans fuite apparente,segments de piston uses,moteur
+consommation de carburant elevee,injecteurs encrasses,injection
+la voiture consomme beaucoup plus qu avant,injecteurs encrasses,injection
+moteur qui manque de peps et consomme trop,injecteurs encrasses,injection
+ralenti irregulier et surconsommation,injecteurs encrasses,injection
+a coups a l acceleration,filtre a carburant colmate,injection
+la voiture hesite quand j accelere,filtre a carburant colmate,injection
+perte de puissance suivie de a coups,filtre a carburant colmate,injection
+moteur qui manque d essence par a coups,filtre a carburant colmate,injection
+perte de puissance en cote,turbo defectueux,injection
+la voiture n a plus de reprise en montee,turbo defectueux,injection
+sifflement suivi d une perte de puissance,turbo defectueux,injection
+fumee et perte de puissance a l acceleration forte,turbo defectueux,injection
+fumee noire a l echappement,melange air carburant trop riche,injection
+echappement qui fume noir en accelerant,melange air carburant trop riche,injection
+depot noir autour du pot d echappement,melange air carburant trop riche,injection
+odeur d essence forte avec fumee noire,melange air carburant trop riche,injection
+bruit de claquement en tournant le volant,rotule de direction usee,direction
+claquement sec quand je braque a fond,rotule de direction usee,direction
+bruit metallique dans les virages serres,rotule de direction usee,direction
+jeu anormal dans la direction avec bruit,rotule de direction usee,direction
+direction dure a manoeuvrer,pompe de direction assistee defectueuse,direction
+le volant devient tres dur a tourner,pompe de direction assistee defectueuse,direction
+direction assistee qui semble ne plus fonctionner,pompe de direction assistee defectueuse,direction
+effort important pour tourner le volant a l arret,pompe de direction assistee defectueuse,direction
+volant qui vibre en ligne droite,geometrie des roues desreglee,direction
+tremblement du volant meme sur route lisse,geometrie des roues desreglee,direction
+vibration constante independante de la vitesse,geometrie des roues desreglee,direction
+volant qui tremble legerement en permanence,geometrie des roues desreglee,direction
+voyant moteur allume sans autre symptome,sonde lambda defectueuse,echappement
+temoin moteur allume sans perte de performance visible,sonde lambda defectueuse,echappement
+voyant orange moteur allume en continu,sonde lambda defectueuse,echappement
+consommation legerement plus elevee avec voyant moteur,sonde lambda defectueuse,echappement
+bruit d echappement anormal type pot casse,silencieux perce,echappement
+bruit fort et grave venant de l echappement,silencieux perce,echappement
+echappement bruyant comme une moto,silencieux perce,echappement
+vibrations et bruit fort a l arriere de la voiture,silencieux perce,echappement
+odeur d oeuf pourri a l echappement,catalyseur defectueux,echappement
+mauvaise odeur soufree qui sort de l echappement,catalyseur defectueux,echappement
+odeur nauseabonde a l arriere du vehicule au ralenti,catalyseur defectueux,echappement
+perte de puissance avec odeur soufree,catalyseur defectueux,echappement
+a coups en changeant de vitesse boite manuelle,embrayage use,transmission
+difficulte a passer les vitesses,embrayage use,transmission
+la voiture patine en accelerant en cote,embrayage use,transmission
+embrayage qui broute au demarrage,embrayage use,transmission
+bruit metallique en debrayant,butee d embrayage defectueuse,transmission
+sifflement quand j appuie sur la pedale d embrayage,butee d embrayage defectueuse,transmission
+bruit strident au point mort avec pedale embrayage enfoncee,butee d embrayage defectueuse,transmission
+grincement en debrayant pour changer de vitesse,butee d embrayage defectueuse,transmission
+boite automatique qui patine,huile de boite automatique usee,transmission
+a coups dans la boite automatique en accelerant,huile de boite automatique usee,transmission
+changements de vitesse brusques en boite auto,huile de boite automatique usee,transmission
+boite auto qui reagit avec retard,huile de boite automatique usee,transmission
+craquement suspension sur les bosses,amortisseurs uses,suspension
+bruit sec a chaque dos d ane,amortisseurs uses,suspension
+la voiture rebondit apres un nid de poule,amortisseurs uses,suspension
+suspension qui craque sur route degradee,amortisseurs uses,suspension
+voiture qui tangue dans les virages,ressorts de suspension fatigues,suspension
+caisse qui penche fortement en virage,ressorts de suspension fatigues,suspension
+roulis important meme a vitesse moderee,ressorts de suspension fatigues,suspension
+suspension molle qui s enfonce dans les virages,ressorts de suspension fatigues,suspension
+bruit sourd a l avant sur route degradee,biellette de barre stabilisatrice cassee,suspension
+cognement metallique a l avant sur les bosses,biellette de barre stabilisatrice cassee,suspension
+bruit de choc sec en passant sur un trou,biellette de barre stabilisatrice cassee,suspension
+claquement avant repetitif sur route abimee,biellette de barre stabilisatrice cassee,suspension
+climatisation qui ne refroidit plus,gaz climatisation manquant,climatisation
+air pas froid meme clim a fond,gaz climatisation manquant,climatisation
+clim qui souffle de l air tiede,gaz climatisation manquant,climatisation
+climatisation faible et inefficace en ete,gaz climatisation manquant,climatisation
+air chaud uniquement en position froid,compresseur de climatisation en panne,climatisation
+la clim souffle de l air chaud constamment,compresseur de climatisation en panne,climatisation
+bruit anormal quand la clim est activee,compresseur de climatisation en panne,climatisation
+clim qui ne s enclenche plus du tout,compresseur de climatisation en panne,climatisation
+mauvaise odeur a la mise en route de la clim,filtre habitacle encrasse,climatisation
+odeur de moisi quand j allume la ventilation,filtre habitacle encrasse,climatisation
+air vicie qui sort des aerateurs,filtre habitacle encrasse,climatisation
+ventilation faible et odeur desagreable,filtre habitacle encrasse,climatisation
+voiture qui broute au demarrage,capteur de vilebrequin defectueux,moteur
+demarrage impossible par intermittence,capteur de vilebrequin defectueux,moteur
+le moteur ne demarre pas une fois sur deux,capteur de vilebrequin defectueux,moteur
+panne moteur soudaine puis redemarrage normal,capteur de vilebrequin defectueux,moteur
+voyant airbag allume en permanence,capteur airbag defectueux,securite
+temoin airbag reste allume sur le tableau de bord,capteur airbag defectueux,securite
+voyant orange airbag qui ne s eteint jamais,capteur airbag defectueux,securite
+alerte airbag active sans raison apparente,capteur airbag defectueux,securite
+ceinture de securite qui ne se retracte pas,mecanisme retracteur bloque,securite
+la ceinture reste tendue et ne s enroule plus,mecanisme retracteur bloque,securite
+ceinture bloquee impossible a detendre,mecanisme retracteur bloque,securite
+enrouleur de ceinture grippe,mecanisme retracteur bloque,securite
+klaxon ne fonctionne plus,fusible klaxon grille,electrique
+aucun son quand j appuie sur le klaxon,fusible klaxon grille,electrique
+klaxon silencieux depuis quelques jours,fusible klaxon grille,electrique
+avertisseur sonore hors service,fusible klaxon grille,electrique
+compteur kilometrique fige ou erratique,capteur de vitesse defectueux,electrique
+vitesse affichee incoherente sur le tableau de bord,capteur de vitesse defectueux,electrique
+compteur qui saute ou reste bloque,capteur de vitesse defectueux,electrique
+aiguille du compteur qui tremble anormalement,capteur de vitesse defectueux,electrique
+demarreur qui fait un bruit de crecelle,pignon du demarreur use,electrique
+bruit metallique aigu au demarrage,pignon du demarreur use,electrique
+grincement bref a chaque demarrage du moteur,pignon du demarreur use,electrique
+son de crecelle en tournant la cle,pignon du demarreur use,electrique
+voyant liquide de frein allume,niveau liquide de frein bas,freinage
+temoin frein qui s allume sur le tableau de bord,niveau liquide de frein bas,freinage
+alerte liquide de frein active,niveau liquide de frein bas,freinage
+voyant rouge frein allume sans autre signe,niveau liquide de frein bas,freinage
+frein a main qui ne tient pas la voiture,cable de frein a main detendu,freinage
+la voiture recule legerement frein a main serre,cable de frein a main detendu,freinage
+frein a main qui glisse en pente,cable de frein a main detendu,freinage
+voiture qui bouge malgre le frein a main serre,cable de frein a main detendu,freinage

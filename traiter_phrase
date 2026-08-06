@@ -1,0 +1,43 @@
+def afficher_guide_pas_a_pas(panne):
+    guide = obtenir_guide(panne)
+    if not guide:
+        return
+
+    if "guide_actif" not in st.session_state:
+        st.session_state.guide_actif = None
+    if "etape_courante" not in st.session_state:
+        st.session_state.etape_courante = 0
+
+    if st.button(f"📖 Voir le guide de réparation pas-à-pas ({guide['titre']})"):
+        st.session_state.guide_actif = panne
+        st.session_state.etape_courante = 0
+        st.rerun()
+
+    if st.session_state.guide_actif == panne:
+        etapes = guide['etapes']
+        idx = st.session_state.etape_courante
+
+        st.markdown("---")
+        st.markdown(f"### 📖 {guide['titre']}")
+        st.caption(f"Source : {guide['source']} — Étape {idx + 1}/{len(etapes)}")
+
+        etape = etapes[idx]
+        st.markdown(f"**{etape['titre']}**")
+        st.info(etape['instruction'])
+
+        col1, col2, col3 = st.columns([1, 1, 2])
+        with col1:
+            if idx > 0 and st.button("⬅️ Précédent"):
+                st.session_state.etape_courante -= 1
+                st.rerun()
+        with col2:
+            if idx < len(etapes) - 1:
+                if st.button("Suivant ➡️"):
+                    st.session_state.etape_courante += 1
+                    st.rerun()
+            else:
+                if st.button("✅ Terminer la réparation"):
+                    st.success("Réparation marquée comme terminée !")
+                    st.session_state.guide_actif = None
+                    st.session_state.etape_courante = 0
+                    st.rerun()

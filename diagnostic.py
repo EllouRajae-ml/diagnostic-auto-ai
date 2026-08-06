@@ -1,15 +1,38 @@
+import difflib
+import re
 import pandas as pd
-from sentence_transformers import SentenceTransformer, util
 from regles import chercher_regle
 
-print("Chargement du modele semantique (peut prendre quelques secondes)...")
-modele_semantique = SentenceTransformer('paraphrase-multilingual-MiniLM-L12-v2')
-
+# Base locale de symptômes déjà fournie dans le projet.
+# Cela évite tout appel réseau, tout téléchargement de modèle et tout timeout HF.
 df = pd.read_csv('pannes.csv')
-phrases_connues = df['symptome'].tolist()
-pannes_connues = df['panne'].tolist()
+phrases_connues = df['symptome'].fillna('').astype(str).tolist()
+pannes_connues = df['panne'].fillna('').astype(str).tolist()
 
-embeddings_connus = modele_semantique.encode(phrases_connues, convert_to_tensor=True)
+
+def _normaliser(texte):
+    texte = (texte or '').lower()
+    texte = re.sub(r"[^a-z0-9\s]", " ", texte)
+    texte = re.sub(r"\s+", " ", texte).strip()
+    return texte
+
+
+def _score_locale(phrase, symptome_connue):
+    phrase_norm = _normaliser(phrase)
+    symptome_norm = _normaliser(symptome_connue)
+
+    tokens_phrase = set(phrase_norm.split())
+    tokens_connue = set(symptome_norm.split())
+
+    if not tokens_phrase or not tokens_connue:
+        return 0.0
+
+    intersection = len(tokens_phrase & tokens_connue)
+    union = len(tokens_phrase | tokens_connue)
+    score_tokens = intersection / max(union, 1)
+    score_similarite = difflib.SequenceMatcher(None, phrase_norm, symptome_norm).ratio()
+
+    return 0.7 * score_tokens + 0.3 * score_similarite
 
 
 def diagnostiquer(phrase):
@@ -17,17 +40,21 @@ def diagnostiquer(phrase):
     if resultat_regle:
         return resultat_regle, "regle (haute confiance)"
 
-    embedding_phrase = modele_semantique.encode(phrase, convert_to_tensor=True)
-    scores = util.cos_sim(embedding_phrase, embeddings_connus)[0]
+    meilleur_score = 0.0
+    panne_trouvee = "panne non identifiee"
+    source = "aucune correspondance locale fiable"
 
-    meilleur_index = scores.argmax().item()
-    meilleur_score = scores[meilleur_index].item()
-    panne_trouvee = pannes_connues[meilleur_index]
+    for symptome_connue, panne in zip(phrases_connues, pannes_connues):
+        score = _score_locale(phrase, symptome_connue)
+        if score > meilleur_score:
+            meilleur_score = score
+            panne_trouvee = panne
+            source = f"correspondance locale (score {score*100:.0f}%)"
 
-    if meilleur_score > 0.5:
-        return panne_trouvee, f"IA semantique (confiance {meilleur_score*100:.0f}%)"
-    else:
-        return "panne non identifiee", "aucune correspondance fiable"
+    if meilleur_score >= 0.35:
+        return panne_trouvee, source
+
+    return "panne non identifiee", source
 
 
 def diagnostiquer_multiple(phrase):

@@ -55,3 +55,18 @@ def statistiques_fiabilite():
     total = confirmes + incorrects
     taux = (confirmes / total * 100) if total > 0 else 0
     return confirmes, incorrects, taux
+    ### A AJOUTER A LA FIN DE base_donnees.py (rien d'existant n'est modifie) ###
+
+def recuperer_historique_recent(limite=8):
+    """Derniers diagnostics tous vehicules confondus, pour la barre d'historique."""
+    conn = obtenir_connexion()
+    cursor = conn.cursor()
+    cursor.execute('''
+        SELECT matricule, modele, panne, date_diagnostic, feedback
+        FROM diagnostics ORDER BY date_diagnostic DESC LIMIT %s
+    ''', (limite,))
+    resultats = cursor.fetchall()
+    cursor.close()
+    conn.close()
+    return resultats
+    

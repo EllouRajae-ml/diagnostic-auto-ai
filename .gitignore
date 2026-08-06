@@ -1,0 +1,6 @@
+venv/
+.streamlit/secrets.toml
+__pycache__/
+*.pyc
+historique.db
+creer_technicien.py

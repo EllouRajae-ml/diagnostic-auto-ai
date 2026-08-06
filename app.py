@@ -3,7 +3,7 @@ import json
 
 with open("solutions_completes.json", encoding="utf-8") as f:
     SOLUTIONS = json.load(f)
-from codes_defaut import rechercher_code
+from codes_defaut import CODES_DEFAUT, rechercher_code
 from guides_generiques import obtenir_guide_generique
 from moteurs_connus import identifier_moteur
 from auth import afficher_connexion
@@ -186,16 +186,22 @@ with st.sidebar:
     if matricule and st.button("📜 Voir historique du véhicule"):
         st.session_state.afficher_historique = matricule
 
-    # --- NOUVEAU : Guide de reparation par code panne ---
+    # --- Guide de reparation par code panne ---
     st.markdown("---")
     st.markdown("<p style='color:#FFD100; font-weight:bold;'>📘 Guide par code panne</p>", unsafe_allow_html=True)
     code_panne = st.text_input("Code affiché sur la valise", placeholder="Ex : P0300")
     if st.button("🔎 Afficher le guide"):
         st.session_state.guide_affiche = code_panne
+        # Mémorise ce code comme "dernier code discuté" pour que les questions
+        # de suivi dans le chat (ex: "plus de détails ?") gardent le contexte.
+        if code_panne:
+            c = code_panne.strip().upper()
+            if c in CODES_DEFAUT:
+                st.session_state.dernier_code_discute = (c, CODES_DEFAUT[c])
     with st.expander("Codes disponibles"):
         st.caption(", ".join(codes_disponibles()))
 
-    # --- NOUVEAU : Barre d'historique recent (tous vehicules) ---
+    # --- Barre d'historique recent (tous vehicules) ---
     st.markdown("---")
     st.markdown("<p style='color:#FFD100; font-weight:bold;'>🕘 Historique récent</p>", unsafe_allow_html=True)
     derniers = recuperer_historique_recent(limite=6)
@@ -262,7 +268,7 @@ def _detail_guide_step(step):
         )
     if any(mot in texte for mot in ["bougie", "bobine", "allumage", "raté"]):
         return (
-            "Détails de contrôle : identifiez le cylindre concerné, vérifiez l’état de la bougie, l’écartement, puis "
+            "Détails de contrôle : identifiez le cylindre concerné, vérifiez l'état de la bougie, l'écartement, puis "
             "testez la bobine par permutation avec une autre bobine. Si le défaut suit la bobine, la pièce est défectueuse."
         )
     if any(mot in texte for mot in ["injecteur", "rampe", "carburant"]):
@@ -311,11 +317,11 @@ if matricule:
     if st.button("📜 Historique du véhicule", key="btn_historique_principal"):
         st.session_state.afficher_historique = matricule
 else:
-    st.info("Saisissez un matricule pour afficher l’historique du véhicule.")
+    st.info("Saisissez un matricule pour afficher l'historique du véhicule.")
 
-# --- NOUVEAU : Affichage du guide de reparation si un code a ete recherche ---
+# --- Affichage du guide de reparation si un code a ete recherche ---
 if "guide_affiche" in st.session_state and st.session_state.guide_affiche:
-    guide = rechercher_guide(st.session_state.guide_affiche)
+    guide = rechercher_guide(st.session_state.guide_affiche, modele=modele)
     st.subheader(f"📘 Guide de réparation — {st.session_state.guide_affiche.strip().upper()}")
     if guide:
         st.markdown(f"<span class='guide-badge'>Gravité : {guide['gravite'].upper()}</span>", unsafe_allow_html=True)
@@ -344,64 +350,14 @@ if "messages" not in st.session_state:
     ]
 if "dernier_diagnostic_id" not in st.session_state:
     st.session_state.dernier_diagnostic_id = None
+if "dernier_code_discute" not in st.session_state:
+    # Mémorise (code, description) du dernier code OBD évoqué, dans le chat
+    # ou via le guide en sidebar, pour donner du contexte aux questions de
+    # suivi ("plus de détails ?") qui ne redonnent pas le code explicitement.
+    st.session_state.dernier_code_discute = None
 
 AVATAR_ASSISTANT = "🔧"
 AVATAR_USER = "🧑"
-
-
-def _detail_guide_step(step):
-    texte = (step or "").lower()
-    if any(mot in texte for mot in ["cable", "câble", "faisceau", "connecteur", "broche", "fil"]):
-        return (
-            "Détails de contrôle : isolez le circuit, repérez le point de passage du câble ou du faisceau, "
-            "inspectez la corrosion/les pinces desserrées, puis mesurez la continuité ou la tension avec un multimètre. "
-            "Si la continuité est ouverte ou que le connecteur est oxydé, le câblage doit être réparé ou remplacé."
-        )
-    if any(mot in texte for mot in ["bougie", "bobine", "allumage", "raté"]):
-        return (
-            "Détails de contrôle : identifiez le cylindre concerné, vérifiez l’état de la bougie, l’écartement, puis "
-            "testez la bobine par permutation avec une autre bobine. Si le défaut suit la bobine, la pièce est défectueuse."
-        )
-    if any(mot in texte for mot in ["injecteur", "rampe", "carburant"]):
-        return (
-            "Détails de contrôle : vérifiez l'alimentation de l'injecteur, sa résistance électrique, son débit et son étanchéité. "
-            "Un défaut d'injection ou une pression de carburant anormale peut reproduire le même symptôme sur plusieurs cylindres."
-        )
-    if any(mot in texte for mot in ["sonde", "capteur", "vilebrequin", "arbre", "position"]):
-        return (
-            "Détails de contrôle : confirmez la localisation du capteur, vérifiez son entrefer ou sa fixation, puis mesurez "
-            "sa tension ou sa résistance selon le type de capteur. Une valeur incohérente ou un signal instable est un indice fort de panne."
-        )
-    if any(mot in texte for mot in ["masse", "alimentation", "fusible", "tension"]):
-        return (
-            "Détails de contrôle : testez la tension d'alimentation au contact, vérifiez la présence de masse correcte "
-            "et confirmez l'état du fusible et du relais associé. Une alimentation ou une masse insuffisante peut simuler un défaut du composant."
-        )
-    return (
-        "Détails de contrôle : localisez précisément le composant, vérifiez son alimentation, sa masse, sa continuité, "
-        "puis confirmez l'état mécanique ou électrique avant remplacement."
-    )
-
-
-def _afficher_etapes_guide(guide):
-    if not guide:
-        return
-
-    etapes = guide.get("etapes", []) if isinstance(guide, dict) else guide
-    if not etapes:
-        return
-
-    for index, etape in enumerate(etapes, 1):
-        if isinstance(etape, dict):
-            titre = f"{index}. {etape.get('titre', 'Étape')}"
-            instruction = etape.get('instruction', '')
-            contenu = f"{instruction}\n\n{_detail_guide_step(instruction)}"
-        else:
-            titre = f"{index}. {etape}"
-            contenu = _detail_guide_step(etape)
-
-        with st.expander(titre, expanded=False):
-            st.markdown(f"<div class='guide-details'>{contenu}</div>", unsafe_allow_html=True)
 
 
 def _render_message(message):
@@ -432,6 +388,7 @@ def _render_message(message):
 for message in st.session_state.messages:
     _render_message(message)
 
+
 def traiter_phrase(phrase):
     st.session_state.messages.append({"role": "user", "content": phrase})
 
@@ -441,7 +398,10 @@ def traiter_phrase(phrase):
     if resultat_code:
         code, description = resultat_code
         code = code.upper()
-        guide = rechercher_guide(code)
+        # Mémorise ce code : les prochaines questions de suivi ("plus de
+        # détails ?") sans code explicite réutiliseront ce contexte.
+        st.session_state.dernier_code_discute = (code, description)
+        guide = rechercher_guide(code, modele=modele)
 
         reponse = f"## 🔧 Code détecté : {code}\n\n"
 
@@ -464,7 +424,22 @@ def traiter_phrase(phrase):
     resultats = diagnostiquer_multiple(phrase)
 
     if not resultats or all("non identifiee" in r[1] for r in resultats):
-        panne, composant, solution, guide = diagnostic_gemini(phrase, modele=modele, debug=True)
+        # Aucun code ni règle locale trouvés dans CE message : si un code
+        # OBD était discuté juste avant (chat ou sidebar), on le rappelle
+        # explicitement à l'IA pour qu'elle reste sur le même sujet au lieu
+        # d'improviser une réponse hors-contexte.
+        phrase_pour_ia = phrase
+        dernier = st.session_state.get("dernier_code_discute")
+        if dernier:
+            dernier_code, dernier_description = dernier
+            phrase_pour_ia = (
+                f"(Contexte de la conversation en cours : on discutait du code défaut "
+                f"{dernier_code} - {dernier_description}. La question suivante du technicien "
+                f"porte sur ce même code, sauf si elle mentionne explicitement autre chose.)\n\n"
+                f"Question du technicien : {phrase}"
+            )
+
+        panne, composant, solution, guide = diagnostic_gemini(phrase_pour_ia, modele=modele)
         reponse = f"**Solution technique recommandée : {panne}**\n\n"
         reponse += f"🔧 **Composant ciblé :** {composant}\n\n"
         reponse += f"✅ **Action directe :** {solution}\n\n"
@@ -534,6 +509,7 @@ def traiter_phrase(phrase):
         panne_principale = resultats[0][1]
         id_diag = ajouter_diagnostic(matricule, modele, kilometrage, phrase, panne_principale)
         st.session_state.dernier_diagnostic_id = id_diag
+
 
 if prompt := st.chat_input("Décrivez les symptômes observés..."):
     with st.chat_message("user", avatar=AVATAR_USER):

@@ -32,59 +32,78 @@ def _taille_texte(texte):
 
 def _recuperer_cle_api():
     """
-    Récupère la clé NVIDIA en essayant, dans l'ordre :
-    1) st.secrets["NVIDIA_API_KEY"]                (Secrets Streamlit Cloud)
-    2) st.secrets["nvidia"]["NVIDIA_API_KEY"]       (Secrets sous forme de section [nvidia])
-    3) variable d'environnement NVIDIA_API_KEY
-    os.getenv() seul ne lit PAS les Secrets Streamlit Cloud, qui ne sont
-    pas injectés dans os.environ, d'où la vérification en plusieurs étapes.
+    Retourne (api_key, base_url, modele_llm) pour le premier fournisseur
+    trouvé, dans cet ordre de priorité :
+    1) OpenAI natif — OPENAI_API_KEY (st.secrets à plat, section [openai], ou env)
+    2) NVIDIA (build.nvidia.com) — NVIDIA_API_KEY, API compatible OpenAI via
+       une simple URL de base différente (aucune dépendance supplémentaire).
+
+    base_url vaut None pour OpenAI natif (URL par défaut du SDK).
     """
-    # 1) Secrets à plat
+    # 1) OpenAI — Secrets à plat
     try:
-        cle = st.secrets.get("NVIDIA_API_KEY")
+        cle = st.secrets.get("OPENAI_API_KEY")
         if cle:
-            return cle.strip()
+            return cle.strip(), None, "gpt-4o-mini"
     except Exception:
         pass
 
-    # 2) Secrets en section [nvidia]
+    # 1) OpenAI — Secrets en section [openai]
     try:
-        section = st.secrets.get("nvidia")
-        if section and section.get("NVIDIA_API_KEY"):
-            return section.get("NVIDIA_API_KEY").strip()
+        section = st.secrets.get("openai")
+        if section and section.get("OPENAI_API_KEY"):
+            return section.get("OPENAI_API_KEY").strip(), None, "gpt-4o-mini"
     except Exception:
         pass
 
-    # 3) Variable d'environnement classique
-    cle_env = (os.getenv("NVIDIA_API_KEY") or "").strip()
+    # 1) OpenAI — variable d'environnement
+    cle_env = (os.getenv("OPENAI_API_KEY") or "").strip()
     if cle_env:
-        return cle_env
+        return cle_env, None, "gpt-4o-mini"
 
-    return None
+    # 2) NVIDIA (build.nvidia.com) — Secrets à plat
+    try:
+        cle_nvidia = st.secrets.get("NVIDIA_API_KEY")
+        if cle_nvidia:
+            return cle_nvidia.strip(), "https://integrate.api.nvidia.com/v1", "meta/llama-3.1-70b-instruct"
+    except Exception:
+        pass
+
+    # 2) NVIDIA — variable d'environnement
+    cle_nvidia_env = (os.getenv("NVIDIA_API_KEY") or "").strip()
+    if cle_nvidia_env:
+        return cle_nvidia_env, "https://integrate.api.nvidia.com/v1", "meta/llama-3.1-70b-instruct"
+
+    return None, None, None
 
 
 def _appel_externe(phrase, modele=None, debug=False):
     """
-    Appelle l'API NVIDIA (compatible OpenAI via base_url dédiée).
-    Si debug=True, les erreurs sont affichées dans l'app via st.warning/st.error
-    au lieu d'être avalées silencieusement.
+    Appelle l'API IA (OpenAI natif, ou NVIDIA build.nvidia.com en repli —
+    voir _recuperer_cle_api). Si debug=True, les erreurs sont affichées
+    dans l'app via st.warning au lieu d'être avalées silencieusement.
+
+    NB : le paramètre 'modele' est le MODÈLE DU VÉHICULE (ex: "Dacia Duster"),
+    pas le modèle d'IA — celui-ci est déterminé automatiquement par
+    _recuperer_cle_api() selon le fournisseur disponible.
     """
-    api_key = _recuperer_cle_api()
+    api_key, base_url, modele_llm = _recuperer_cle_api()
     if not api_key:
         if debug:
             st.warning(
-                "Aucune clé NVIDIA_API_KEY trouvée (ni dans st.secrets, ni en variable "
-                "d'environnement). Le diagnostic va utiliser le fallback local."
+                "Aucune clé API trouvée (ni OPENAI_API_KEY, ni NVIDIA_API_KEY — "
+                "ni dans st.secrets, ni en variable d'environnement). Le diagnostic "
+                "va utiliser le fallback local."
             )
         return None
 
     try:
         from openai import OpenAI
 
-        client = OpenAI(
-            base_url="https://integrate.api.nvidia.com/v1",
-            api_key=api_key
-        )
+        if base_url:
+            client = OpenAI(api_key=api_key, base_url=base_url)
+        else:
+            client = OpenAI(api_key=api_key)
 
         system_prompt = (
             "Tu es un technicien diagnostic automobile senior, spécialisé Dacia/Renault, "
@@ -114,9 +133,8 @@ def _appel_externe(phrase, modele=None, debug=False):
             "sans phrase d'introduction ni de conclusion générique."
         )
 
-        # chat.completions reste l'API la plus stable/compatible avec les modèles NVIDIA NIM
         rep = client.chat.completions.create(
-            model="meta/llama-3.1-70b-instruct",
+            model=modele_llm,
             messages=[
                 {"role": "system", "content": system_prompt},
                 {"role": "user", "content": prompt},
@@ -130,12 +148,12 @@ def _appel_externe(phrase, modele=None, debug=False):
             return contenu.strip()
 
         if debug:
-            st.warning("L'API NVIDIA a répondu mais sans contenu exploitable.")
+            st.warning("L'API IA a répondu mais sans contenu exploitable.")
         return None
 
     except Exception as erreur:
         if debug:
-            st.error(f"Erreur appel NVIDIA : {erreur}")
+            st.error(f"Erreur appel IA ({'NVIDIA' if base_url else 'OpenAI'}) : {erreur}")
         return None
 
 
@@ -273,7 +291,7 @@ def _solution_directe(panne, composant, controle, modele=None):
 def diagnostic_gemini(phrase, modele=None, debug=False):
     """
     Chemin local prioritaire (rapide, gratuit, cohérent sur les 2393 codes).
-    L'appel IA externe (NVIDIA) n'est déclenché que dans deux cas :
+    L'appel IA externe (OpenAI) n'est déclenché que dans deux cas :
     1) aucune correspondance trouvée dans la base locale (EXPLICATIONS),
     2) la phrase saisie est une vraie question / demande d'explication
        (ex: "pourquoi...", "explique...", présence d'un "?"), auquel cas

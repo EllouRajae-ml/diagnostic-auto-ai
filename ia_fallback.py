@@ -65,14 +65,14 @@ def _recuperer_cle_api():
     try:
         cle_nvidia = st.secrets.get("NVIDIA_API_KEY")
         if cle_nvidia:
-            return cle_nvidia.strip(), "https://integrate.api.nvidia.com/v1", "meta/llama-3.1-70b-instruct"
+            return cle_nvidia.strip(), "https://integrate.api.nvidia.com/v1", "meta/llama-3.1-8b-instruct"
     except Exception:
         pass
 
     # 2) NVIDIA — variable d'environnement
     cle_nvidia_env = (os.getenv("NVIDIA_API_KEY") or "").strip()
     if cle_nvidia_env:
-        return cle_nvidia_env, "https://integrate.api.nvidia.com/v1", "meta/llama-3.1-70b-instruct"
+        return cle_nvidia_env, "https://integrate.api.nvidia.com/v1", "meta/llama-3.1-8b-instruct"
 
     return None, None, None
 
@@ -140,7 +140,7 @@ def _appel_externe(phrase, modele=None, debug=False):
                 {"role": "user", "content": prompt},
             ],
             temperature=0.15,
-            max_tokens=1100
+            max_tokens=700
         )
 
         contenu = rep.choices[0].message.content if rep.choices else None

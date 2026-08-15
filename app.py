@@ -33,10 +33,21 @@ section[data-testid="stSidebar"] {
     border-right: 3px solid #FFD100;
 }
 section[data-testid="stSidebar"] * { color: #f0f0f0 !important; }
-h1 {
-    color: #FFD100; text-align: center; font-size: 2.4em; font-weight: 900;
-    letter-spacing: 1px; text-shadow: 0 4px 12px rgba(255,209,0,0.35);
+
+/* En-tete style Bolt : logo + titre alignes a gauche */
+.topbar {
+    display: flex; align-items: center; gap: 12px;
+    padding: 14px 4px 20px 4px; border-bottom: 1px solid #1c1c1c; margin-bottom: 18px;
 }
+.topbar-badge {
+    width: 42px; height: 42px; border-radius: 12px; flex-shrink: 0;
+    background: linear-gradient(145deg, #FFE566, #FFD100 55%, #D9A400);
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 6px 16px rgba(255,209,0,0.3);
+}
+.topbar-title { color: #FFD100; font-size: 1.5em; font-weight: 900; letter-spacing: 0.3px; }
+.topbar-subtitle { color: #888; font-size: 0.82em; margin-top: -2px; }
+
 h2, h3 { color: #FFD100 !important; }
 .sous-titre { text-align: center; color: #bbbbbb; margin-bottom: 1.8em; font-size: 1.05em; }
 .stTextInput input, .stNumberInput input, .stSelectbox select {
@@ -48,10 +59,17 @@ h2, h3 { color: #FFD100 !important; }
     box-shadow: 0 6px 14px rgba(255,209,0,0.3);
 }
 .stButton button:hover { transform: translateY(-2px); }
+
+/* Bulles de chat style badge + carte arrondie */
 .stChatMessage {
-    border-radius: 14px; border: 1px solid #2a2a2a;
-    background: linear-gradient(145deg, #181818, #101010);
+    border-radius: 16px !important; border: 1px solid #232323 !important;
+    background: #141414 !important;
     color: #ffffff !important;
+}
+.stChatMessage [data-testid="chatAvatarIcon-assistant"],
+.stChatMessage [data-testid="chatAvatarIcon-user"] {
+    background: linear-gradient(145deg, #FFE566, #FFD100 55%, #D9A400) !important;
+    border-radius: 12px !important;
 }
 .stChatMessage [data-testid="stChatMessageContent"] *,
 .stChatMessage p,
@@ -62,9 +80,17 @@ h2, h3 { color: #FFD100 !important; }
 div[data-testid="stMarkdownContainer"] * {
     color: #ffffff !important;
 }
-.stChatInput textarea {
-    background-color: #1a1a1a !important; color: white !important; border: 2px solid #FFD100 !important;
+
+/* Champ de saisie en pilule, bordure jaune fine */
+.stChatInput {
+    background-color: transparent !important;
 }
+.stChatInput textarea {
+    background-color: #121212 !important; color: white !important;
+    border: 1.5px solid #FFD100 !important; border-radius: 30px !important;
+    padding: 12px 20px !important;
+}
+
 p, span, label { color: #e0e0e0 !important; }
 .logo-conteneur { display: flex; justify-content: center; margin-bottom: 0.3em; }
 
@@ -146,6 +172,13 @@ LOGO_SVG = """
 </svg>
 """
 
+LOGO_BADGE_PETIT = """
+<svg width="22" height="22" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+    <path d="M50 8 L88 50 L50 92 L12 50 Z" fill="none" stroke="#0a0a0a" stroke-width="8"/>
+    <path d="M50 28 L70 50 L50 72 L30 50 Z" fill="#0a0a0a"/>
+</svg>
+"""
+
 MODELES = ["Non precise", "Dacia Sandero", "Dacia Duster", "Dacia Logan", "Dacia Spring",
            "Renault Clio", "Renault Megane", "Renault Captur", "Renault Kadjar", "Autre"]
 
@@ -192,8 +225,6 @@ with st.sidebar:
     code_panne = st.text_input("Code affiché sur la valise", placeholder="Ex : P0300")
     if st.button("🔎 Afficher le guide"):
         st.session_state.guide_affiche = code_panne
-        # Mémorise ce code comme "dernier code discuté" pour que les questions
-        # de suivi dans le chat (ex: "plus de détails ?") gardent le contexte.
         if code_panne:
             c = code_panne.strip().upper()
             if c in CODES_DEFAUT:
@@ -226,8 +257,15 @@ with st.sidebar:
     st.markdown("---")
     st.caption("⚠️ Diagnostic indicatif — validation technicien requise.")
 
-st.markdown("<h1>⬥ AutoDiag AI</h1>", unsafe_allow_html=True)
-st.markdown("<p class='sous-titre'>Assistant de diagnostic pour techniciens — Dacia & Renault</p>", unsafe_allow_html=True)
+st.markdown(f"""
+<div class="topbar">
+    <div class="topbar-badge">{LOGO_BADGE_PETIT}</div>
+    <div>
+        <div class="topbar-title">AutoDiag AI</div>
+        <div class="topbar-subtitle">Diagnostic Dacia &amp; Renault</div>
+    </div>
+</div>
+""", unsafe_allow_html=True)
 
 if "info_moteur_affiche" in st.session_state and st.session_state.info_moteur_affiche:
     moteur = identifier_moteur(st.session_state.info_moteur_affiche)
@@ -351,9 +389,6 @@ if "messages" not in st.session_state:
 if "dernier_diagnostic_id" not in st.session_state:
     st.session_state.dernier_diagnostic_id = None
 if "dernier_code_discute" not in st.session_state:
-    # Mémorise (code, description) du dernier code OBD évoqué, dans le chat
-    # ou via le guide en sidebar, pour donner du contexte aux questions de
-    # suivi ("plus de détails ?") qui ne redonnent pas le code explicitement.
     st.session_state.dernier_code_discute = None
 
 AVATAR_ASSISTANT = "🔧"
@@ -392,14 +427,11 @@ for message in st.session_state.messages:
 def traiter_phrase(phrase):
     st.session_state.messages.append({"role": "user", "content": phrase})
 
-    # Recherche directe d'un code OBD dans la phrase
     resultat_code = rechercher_code(phrase)
 
     if resultat_code:
         code, description = resultat_code
         code = code.upper()
-        # Mémorise ce code : les prochaines questions de suivi ("plus de
-        # détails ?") sans code explicite réutiliseront ce contexte.
         st.session_state.dernier_code_discute = (code, description)
         guide = rechercher_guide(code, modele=modele)
 
@@ -424,10 +456,6 @@ def traiter_phrase(phrase):
     resultats = diagnostiquer_multiple(phrase)
 
     if not resultats or all("non identifiee" in r[1] for r in resultats):
-        # Aucun code ni règle locale trouvés dans CE message : si un code
-        # OBD était discuté juste avant (chat ou sidebar), on le rappelle
-        # explicitement à l'IA pour qu'elle reste sur le même sujet au lieu
-        # d'improviser une réponse hors-contexte.
         phrase_pour_ia = phrase
         dernier = st.session_state.get("dernier_code_discute")
         if dernier:
@@ -518,7 +546,6 @@ if prompt := st.chat_input("Décrivez les symptômes observés..."):
         traiter_phrase(prompt)
     _render_message(st.session_state.messages[-1])
 
-# Boutons de feedback sur le dernier diagnostic
 if st.session_state.dernier_diagnostic_id:
     st.markdown("---")
     st.caption("Ce diagnostic était-il correct ?")

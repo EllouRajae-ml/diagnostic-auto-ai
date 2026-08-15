@@ -390,3 +390,4 @@ def diagnostic_gemini(phrase, modele=None, debug=False):
     if note_modele:
         solution = f"{solution}\n\n{note_modele}"
 
+    return panne, composant, solution, guide

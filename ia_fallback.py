@@ -140,7 +140,7 @@ def _appel_externe(phrase, modele=None, debug=False):
                 {"role": "user", "content": prompt},
             ],
             temperature=0.15,
-            max_tokens=700
+            max_tokens=400
         )
 
         contenu = rep.choices[0].message.content if rep.choices else None

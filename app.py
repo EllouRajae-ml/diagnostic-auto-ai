@@ -254,10 +254,6 @@ with st.sidebar:
         st.markdown(f"<p style='color:#FFD100; font-weight:bold;'>📊 Fiabilité mesurée</p>", unsafe_allow_html=True)
         st.markdown(f"<p style='font-size:0.85em;'>{taux:.0f}% confirmés sur {confirmes+incorrects} retours</p>", unsafe_allow_html=True)
 
-    # --- Mode debug (affiche les erreurs d'appel API IA au lieu de les masquer) ---
-    st.markdown("---")
-    mode_debug = st.checkbox("🐛 Mode debug (afficher erreurs API)")
-
     st.markdown("---")
     st.caption("⚠️ Diagnostic indicatif — validation technicien requise.")
 
@@ -471,7 +467,7 @@ def traiter_phrase(phrase):
                 f"Question du technicien : {phrase}"
             )
 
-        panne, composant, solution, guide = diagnostic_gemini(phrase_pour_ia, modele=modele, debug=mode_debug)
+        panne, composant, solution, guide = diagnostic_gemini(phrase_pour_ia, modele=modele)
         reponse = f"**Solution technique recommandée : {panne}**\n\n"
         reponse += f"🔧 **Composant ciblé :** {composant}\n\n"
         reponse += f"✅ **Action directe :** {solution}\n\n"

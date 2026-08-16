@@ -39,8 +39,11 @@ def _recuperer_cle_api():
        une simple URL de base différente (aucune dépendance supplémentaire).
 
     base_url vaut None pour OpenAI natif (URL par défaut du SDK).
+
+    NB : modele_llm NVIDIA utilise la version 8B (au lieu de 70B) pour
+    des réponses nettement plus rapides, avec une qualité suffisante
+    pour du diagnostic technique structuré.
     """
-    # 1) OpenAI — Secrets à plat
     try:
         cle = st.secrets.get("OPENAI_API_KEY")
         if cle:
@@ -48,7 +51,6 @@ def _recuperer_cle_api():
     except Exception:
         pass
 
-    # 1) OpenAI — Secrets en section [openai]
     try:
         section = st.secrets.get("openai")
         if section and section.get("OPENAI_API_KEY"):
@@ -56,23 +58,20 @@ def _recuperer_cle_api():
     except Exception:
         pass
 
-    # 1) OpenAI — variable d'environnement
     cle_env = (os.getenv("OPENAI_API_KEY") or "").strip()
     if cle_env:
         return cle_env, None, "gpt-4o-mini"
 
-    # 2) NVIDIA (build.nvidia.com) — Secrets à plat
     try:
         cle_nvidia = st.secrets.get("NVIDIA_API_KEY")
         if cle_nvidia:
-            return cle_nvidia.strip(), "https://integrate.api.nvidia.com/v1", "meta/llama-3.1-70b-instruct"
+            return cle_nvidia.strip(), "https://integrate.api.nvidia.com/v1", "meta/llama-3.1-8b-instruct"
     except Exception:
         pass
 
-    # 2) NVIDIA — variable d'environnement
     cle_nvidia_env = (os.getenv("NVIDIA_API_KEY") or "").strip()
     if cle_nvidia_env:
-        return cle_nvidia_env, "https://integrate.api.nvidia.com/v1", "meta/llama-3.1-70b-instruct"
+        return cle_nvidia_env, "https://integrate.api.nvidia.com/v1", "meta/llama-3.1-8b-instruct"
 
     return None, None, None
 
@@ -82,10 +81,6 @@ def _appel_externe(phrase, modele=None, debug=False):
     Appelle l'API IA (OpenAI natif, ou NVIDIA build.nvidia.com en repli —
     voir _recuperer_cle_api). Si debug=True, les erreurs sont affichées
     dans l'app via st.warning au lieu d'être avalées silencieusement.
-
-    NB : le paramètre 'modele' est le MODÈLE DU VÉHICULE (ex: "Dacia Duster"),
-    pas le modèle d'IA — celui-ci est déterminé automatiquement par
-    _recuperer_cle_api() selon le fournisseur disponible.
     """
     api_key, base_url, modele_llm = _recuperer_cle_api()
     if not api_key:
@@ -173,12 +168,6 @@ def _classer_type_probleme(texte, panne):
 
 
 def _est_demande_explication(texte):
-    """
-    Détecte si la phrase est une question / demande d'explication
-    plutôt qu'un simple symptôme brut à diagnostiquer.
-    Dans ce cas, on privilégie l'appel IA (plus adapté à une vraie
-    réponse conversationnelle) même si un mot-clé existe en base locale.
-    """
     texte = (texte or "").lower()
     mots_declencheurs = [
         "pourquoi", "comment", "explique", "expliquer", "explication",
@@ -291,20 +280,12 @@ def _solution_directe(panne, composant, controle, modele=None):
 def diagnostic_gemini(phrase, modele=None, debug=False):
     """
     Chemin local prioritaire (rapide, gratuit, cohérent sur les 2393 codes).
-    L'appel IA externe (OpenAI) n'est déclenché que dans deux cas :
+    L'appel IA externe n'est déclenché que dans deux cas :
     1) aucune correspondance trouvée dans la base locale (EXPLICATIONS),
-    2) la phrase saisie est une vraie question / demande d'explication
-       (ex: "pourquoi...", "explique...", présence d'un "?"), auquel cas
-       une réponse conversationnelle générée par l'IA est plus adaptée
-       qu'une fiche de diagnostic figée.
-
-    Passe debug=True depuis l'app (ex: une checkbox dans la sidebar)
-    pour voir pourquoi l'appel externe échoue au lieu de basculer
-    silencieusement sur le fallback local.
+    2) la phrase saisie est une vraie question / demande d'explication.
     """
     texte = (phrase or "").lower().strip()
 
-    # 1) Recherche dans la base locale D'ABORD
     correspondance = None
     score_max = 0
     for mot_cle, donnees in EXPLICATIONS.items():
@@ -316,14 +297,10 @@ def diagnostic_gemini(phrase, modele=None, debug=False):
 
     demande_explication = _est_demande_explication(texte)
 
-    # 2) Appel IA seulement si rien trouvé localement,
-    #    OU si l'utilisateur pose une vraie question / demande des explications
     if (not correspondance) or demande_explication:
         reponse_externe = _appel_externe(phrase, modele=modele, debug=debug)
         if reponse_externe:
             return "diagnostic externe", "système concerné", reponse_externe, None
-        # Si l'appel IA échoue (pas de clé API, erreur réseau, quota atteint...),
-        # on continue ci-dessous avec le fallback local normal, sans planter.
 
     panne = "panne non identifiee"
     composant = "composant a identifier"
@@ -385,8 +362,6 @@ def diagnostic_gemini(phrase, modele=None, debug=False):
             f"{solution}"
         )
 
-    # La réponse finale est construite à partir de la panne réelle identifiée
-    # par la base locale, ce qui évite l'impression d'une seule et même solution.
     if note_modele:
         solution = f"{solution}\n\n{note_modele}"
 

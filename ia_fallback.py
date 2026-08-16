@@ -65,14 +65,14 @@ def _recuperer_cle_api():
     try:
         cle_nvidia = st.secrets.get("NVIDIA_API_KEY")
         if cle_nvidia:
-            return cle_nvidia.strip(), "https://integrate.api.nvidia.com/v1", "meta/llama-3.1-8b-instruct"
+            return cle_nvidia.strip(), "https://integrate.api.nvidia.com/v1", "meta/llama-3.1-70b-instruct"
     except Exception:
         pass
 
     # 2) NVIDIA — variable d'environnement
     cle_nvidia_env = (os.getenv("NVIDIA_API_KEY") or "").strip()
     if cle_nvidia_env:
-        return cle_nvidia_env, "https://integrate.api.nvidia.com/v1", "meta/llama-3.1-8b-instruct"
+        return cle_nvidia_env, "https://integrate.api.nvidia.com/v1", "meta/llama-3.1-70b-instruct"
 
     return None, None, None
 
